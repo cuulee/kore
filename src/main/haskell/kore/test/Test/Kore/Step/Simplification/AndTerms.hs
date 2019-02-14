@@ -26,7 +26,7 @@ import           Kore.Step.Pattern
 import           Kore.Step.Simplification.AndTerms
                  ( termAnd, termUnification )
 import           Kore.Step.Simplification.Data
-                 ( evalSimplifier, liftPredicateSubstitutionSimplifier )
+                 ( evalSimplifier )
 import           Kore.Step.StepperAttributes
                  ( StepperAttributes )
 import qualified Kore.Unification.Substitution as Substitution
@@ -804,9 +804,7 @@ unify tools first second =
     SMT.runSMT SMT.defaultConfig
     $ evalSimplifier $ runMaybeT $ (<$>) fst $ unification
   where
-    substitutionSimplifier =
-        liftPredicateSubstitutionSimplifier
-            (Mock.substitutionSimplifier tools)
+    substitutionSimplifier = Mock.substitutionSimplifier tools
     unification =
         -- The unification error is discarded because, for testing purposes, we
         -- are not interested in the /reason/ unification failed. For the tests,

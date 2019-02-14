@@ -12,15 +12,11 @@ module Kore.Step.Simplification.Data
     , runSimplifier
     , evalSimplifier
     , PredicateSubstitutionSimplifier (..)
-    , liftPredicateSubstitutionSimplifier
     , StepPatternSimplifier (..)
     , CommonStepPatternSimplifier
     , SimplificationProof (..)
     , SimplificationType (..)
     ) where
-
-import           Control.Monad.Reader
-import qualified Control.Monad.Trans as Monad.Trans
 
 import Kore.AST.Common
        ( SortedVariable, Variable )
@@ -118,12 +114,3 @@ newtype PredicateSubstitutionSimplifier level m =
             , SimplificationProof level
             )
         )
-
-liftPredicateSubstitutionSimplifier
-    :: (MonadTrans t, Monad m)
-    => PredicateSubstitutionSimplifier level m
-    -> PredicateSubstitutionSimplifier level (t m)
-liftPredicateSubstitutionSimplifier
-    (PredicateSubstitutionSimplifier simplifier)
-  =
-    PredicateSubstitutionSimplifier (Monad.Trans.lift . simplifier)
